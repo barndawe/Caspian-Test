@@ -52,7 +52,6 @@ public class BillingServiceTests
         sut.CalculateBill(items).ItemTotal.Should().Be(expectedBill);
     }
     
-    //incorrect item(s) throws exception (theory)
     [InlineData("Tea")]
     [InlineData("Coffee", "Tea", "Beer")]
     [Theory]
@@ -63,5 +62,17 @@ public class BillingServiceTests
         var action = () => sut.CalculateBill(items);
 
         action.Should().Throw<UnavailableMenuItemException>();
+    }
+    
+    [InlineData(0.5, "CoLa")]
+    [InlineData(1, "COFFEE")]
+    [InlineData(2, "ChEeSe SaNdWiCh")]
+    [InlineData(4.5, "steak sandwich")]
+    [Theory]
+    public void Item_case_does_not_matter(decimal expectedBill, string item)
+    {
+        var sut = new BillingService(new InMemoryMenuItemRepository());
+
+        sut.CalculateBill(new[] { item }).ItemTotal.Should().Be(expectedBill);
     }
 }

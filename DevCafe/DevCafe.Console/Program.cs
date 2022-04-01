@@ -7,3 +7,6 @@ using var host = Host.CreateDefaultBuilder(args)
     {
         
     }).Build();
+
+
+return -1;
