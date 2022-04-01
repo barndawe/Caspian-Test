@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using Xunit;
 
 namespace DevCafe.Core.IntegrationTests;
 
+//Step 2 tests
 public class ConsoleAppTests
 {
     [Fact]
@@ -22,8 +24,8 @@ public class ConsoleAppTests
     
     [InlineData(0.5, "Cola")]
     [InlineData(1, "Coffee")]
-    [InlineData(2, "Cheese Sandwich")]
-    [InlineData(4.5, "Steak Sandwich")]
+    [InlineData(2.2, "Cheese Sandwich")]
+    [InlineData(5.4, "Steak Sandwich")]
     [Theory]
     public async Task Single_item_bills_are_correct(decimal expectedBill, string item)
     {
@@ -35,9 +37,9 @@ public class ConsoleAppTests
     }
     
     [InlineData(1.5, "Cola", "Coffee")]
-    [InlineData(7.5, "Coffee", "Cheese Sandwich", "Steak Sandwich")]
-    [InlineData(3, "Cheese Sandwich", "Coffee")]
-    [InlineData(7, "Steak Sandwich", "Cola", "Cheese Sandwich")]
+    [InlineData(9, "Coffee", "Cheese Sandwich", "Steak Sandwich")]
+    [InlineData(3.3, "Cheese Sandwich", "Coffee")]
+    [InlineData(8.4, "Steak Sandwich", "Cola", "Cheese Sandwich")]
     [Theory]
     public async Task Multiple_item_bills_are_correct(decimal expectedBill, params string[] items)
     {
@@ -50,8 +52,8 @@ public class ConsoleAppTests
     
     [InlineData(2, "Cola", "Cola", "Cola", "Cola")]
     [InlineData(3, "Coffee", "Coffee", "Coffee")]
-    [InlineData(5, "Cheese Sandwich", "Coffee", "Cheese Sandwich")]
-    [InlineData(12.5, "Steak Sandwich", "Cola", "Cheese Sandwich", "Cola", "Cola", "Steak Sandwich")]
+    [InlineData(5.5, "Cheese Sandwich", "Coffee", "Cheese Sandwich")]
+    [InlineData(15, "Steak Sandwich", "Cola", "Cheese Sandwich", "Cola", "Cola", "Steak Sandwich")]
     [Theory]
     public async Task Multiples_of_same_item_on_bills_are_correct(decimal expectedBill, params string[] items)
     {
@@ -76,8 +78,8 @@ public class ConsoleAppTests
     
     [InlineData(0.5, "CoLa")]
     [InlineData(1, "COFFEE")]
-    [InlineData(2, "ChEeSe SaNdWiCh")]
-    [InlineData(4.5, "steak sandwich")]
+    [InlineData(2.2, "ChEeSe SaNdWiCh")]
+    [InlineData(5.4, "steak sandwich")]
     [Theory]
     public async Task Item_case_does_not_matter(decimal expectedBill, string item)
     {
@@ -86,6 +88,44 @@ public class ConsoleAppTests
         var response = await WaitForResponse(sut);
 
         response.Should().Be(expectedBill.ToString("0.00"));
+    }
+    
+    [Fact]
+    public async Task Order_containing_hot_food_service_charge_maxes_out_at_20()
+    {
+        var thatIsALotOfSteakSandwiches = new List<string>();
+
+        for (var i = 0; i <= 25; i++)
+        {
+            thatIsALotOfSteakSandwiches.Add("Steak Sandwich");
+        }
+        
+        thatIsALotOfSteakSandwiches.Add("Cola");
+        
+        var sut = StartCafeMenuConsoleApp(thatIsALotOfSteakSandwiches.ToArray());
+
+        var response = await WaitForResponse(sut);
+
+        response.Should().Be(133.ToString("0.00"));
+    }
+    
+    [Fact]
+    public async Task Order_containing_no_hot_food_service_charge_can_exceed_20()
+    {
+        var howCanAnyoneNeedThisManyCheeseSandwiches = new List<string>();
+
+        for (var i = 0; i <= 100; i++)
+        {
+            howCanAnyoneNeedThisManyCheeseSandwiches.Add("Cheese Sandwich");
+        }
+        
+        howCanAnyoneNeedThisManyCheeseSandwiches.Add("Coffee");
+        
+        var sut = StartCafeMenuConsoleApp(howCanAnyoneNeedThisManyCheeseSandwiches.ToArray());
+
+        var response = await WaitForResponse(sut);
+
+        response.Should().Be(221.1M.ToString("0.00"));
     }
     
     private Process StartCafeMenuConsoleApp(params string[] arguments)
