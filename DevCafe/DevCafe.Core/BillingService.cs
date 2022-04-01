@@ -17,11 +17,12 @@ public class BillingService
         var menuItemsAndCounts = GetValidMenuItemsAndCounts(itemNames).ToList();
 
         var itemTotal = CalculateItemTotal(menuItemsAndCounts);
+        var serviceCharge = CalculateServiceCharge(menuItemsAndCounts.Select(mc => mc.item), itemTotal);
 
-        return new Bill(itemTotal, 0);
+        return new Bill(itemTotal, serviceCharge);
     }
 
-    private IEnumerable<(MenuItem, int)> GetValidMenuItemsAndCounts(IEnumerable<string> itemNames)
+    private IEnumerable<(MenuItem item, int count)> GetValidMenuItemsAndCounts(IEnumerable<string> itemNames)
     {
         var itemNameList = itemNames.Select(i => i.ToLowerInvariant()).ToList();
         
@@ -54,5 +55,29 @@ public class BillingService
             var (menuItem, count) = itemAndCount;
             return total + (menuItem.UnitCost * count);
         });
+    }
+
+    private decimal CalculateServiceCharge(IEnumerable<MenuItem> orderedMenuItems, decimal itemTotal)
+    {
+        var menuItems = orderedMenuItems.ToList();
+        if (menuItems.Any(i => i.Category == ItemCategory.Food && i.Temperature == ItemTemperature.Hot))
+        {
+            var serviceCharge = itemTotal * 0.2M;
+
+            if (serviceCharge > 20)
+            {
+                serviceCharge = 20;
+            }
+
+            return serviceCharge;
+        }
+
+        if (menuItems.Any(i => i.Category == ItemCategory.Food))
+        {
+            //The spec did not explicitly say to cap the service charge at 20 for cold food-only orders
+            return itemTotal * 0.1M;
+        }
+
+        return 0;
     }
 }

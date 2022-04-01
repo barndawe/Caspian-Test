@@ -92,7 +92,7 @@ public class BillingServiceTests
 
         var thatIsALotOfSteakSandwiches = new List<string>();
 
-        for (var i = 0; i <= 25; i++)
+        for (var i = 0; i < 25; i++)
         {
             thatIsALotOfSteakSandwiches.Add("Steak Sandwich");
         }
@@ -111,7 +111,7 @@ public class BillingServiceTests
 
         var howCanAnyoneNeedThisManyCheeseSandwiches = new List<string>();
 
-        for (var i = 0; i <= 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             howCanAnyoneNeedThisManyCheeseSandwiches.Add("Cheese Sandwich");
         }

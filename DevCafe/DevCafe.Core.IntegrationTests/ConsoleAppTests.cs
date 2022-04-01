@@ -95,7 +95,7 @@ public class ConsoleAppTests
     {
         var thatIsALotOfSteakSandwiches = new List<string>();
 
-        for (var i = 0; i <= 25; i++)
+        for (var i = 0; i < 25; i++)
         {
             thatIsALotOfSteakSandwiches.Add("Steak Sandwich");
         }
@@ -114,7 +114,7 @@ public class ConsoleAppTests
     {
         var howCanAnyoneNeedThisManyCheeseSandwiches = new List<string>();
 
-        for (var i = 0; i <= 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             howCanAnyoneNeedThisManyCheeseSandwiches.Add("Cheese Sandwich");
         }
@@ -125,7 +125,7 @@ public class ConsoleAppTests
 
         var response = await WaitForResponse(sut);
 
-        response.Should().Be(221.1M.ToString("0.00"));
+       response.Should().Be(221.1M.ToString("0.00"));
     }
     
     private Process StartCafeMenuConsoleApp(params string[] arguments)
