@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCafe.Core.IntegrationTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCafe.Console", "DevCafe.Console\DevCafe.Console.csproj", "{7CEC7FF0-0375-41E7-8500-ED322EC93F54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCafe.Application.UnitTests", "DevCafe.Application.UnitTests\DevCafe.Application.UnitTests.csproj", "{DD90686F-F78D-494D-8409-A9B0B15BD317}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCafe.Core.UnitTests", "DevCafe.Core.UnitTests\DevCafe.Core.UnitTests.csproj", "{DD90686F-F78D-494D-8409-A9B0B15BD317}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCafe.Core", "DevCafe.Core\DevCafe.Core.csproj", "{67A3C378-B2FB-4A51-913C-218046278C3C}"
 EndProject
