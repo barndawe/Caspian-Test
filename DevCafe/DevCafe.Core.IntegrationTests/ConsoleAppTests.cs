@@ -8,13 +8,12 @@ using Xunit;
 
 namespace DevCafe.Core.IntegrationTests;
 
-
 public class ConsoleAppTests
 {
     [Fact]
     public async Task No_input_items_returns_error_message()
     {
-        var sut = StartCafeMenuConsoleApp(string.Empty);
+        var sut = StartCafeMenuConsoleApp();
 
         var response = await WaitForResponse(sut);
 

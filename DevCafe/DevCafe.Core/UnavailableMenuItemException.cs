@@ -8,4 +8,9 @@ public class UnavailableMenuItemException : Exception
     }
 
     public IEnumerable<string> UnavailableItems { get;}
+
+    public override string ToString()
+    {
+        return $"{Message} Items: {string.Join(", ", UnavailableItems)}";
+    }
 }
