@@ -32,5 +32,10 @@ catch (UnavailableMenuItemException unEx)
     Console.WriteLine(unEx.ToString());
     return 1;
 }
+catch (Exception ex)
+{
+    Console.WriteLine("An unexpected error has occurred");
+    return 1;
+}
 
 

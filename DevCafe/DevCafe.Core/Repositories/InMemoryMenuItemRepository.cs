@@ -14,6 +14,6 @@ public class InMemoryMenuItemRepository : IMenuItemRepository
 
     public IEnumerable<MenuItem> GetItemsByNames(IEnumerable<string> itemNames)
     {
-        return Items.Where(i => itemNames.Contains(i.Name, StringComparer.InvariantCultureIgnoreCase));
+        return Items.Where(i => itemNames.Contains(i.Name, StringComparer.OrdinalIgnoreCase));
     }
 }

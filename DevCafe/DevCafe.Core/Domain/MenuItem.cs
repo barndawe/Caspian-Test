@@ -10,11 +10,11 @@ public class MenuItem
         UnitCost = unitCost;
     }
 
-    public string Name { get; private set; }
+    public string Name { get; }
 
-    public ItemCategory Category { get; private set; }
+    public ItemCategory Category { get; }
 
-    public ItemTemperature Temperature { get; private set; }
+    public ItemTemperature Temperature { get; }
 
-    public decimal UnitCost { get; private set; }
+    public decimal UnitCost { get; }
 }

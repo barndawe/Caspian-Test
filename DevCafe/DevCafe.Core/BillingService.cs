@@ -27,12 +27,11 @@ public class BillingService
         var itemNameList = itemNames.Select(i => i.ToLowerInvariant()).ToList();
         
         var distinctItemNames = itemNameList.Distinct().ToList();
-        
-        var menuItems = _itemRepository.GetItemsByNames(distinctItemNames).ToList();
 
-        var unknownItemNames = distinctItemNames.Where(i =>
-                !menuItems.Select(m => m.Name)
-                    .Contains(i, StringComparer.InvariantCultureIgnoreCase))
+        var menuItems = _itemRepository.GetItemsByNames(distinctItemNames)
+            .ToDictionary(i => i.Name, i => i, StringComparer.OrdinalIgnoreCase);
+
+        var unknownItemNames = distinctItemNames.Where(i => !menuItems.ContainsKey(i))
             .ToList();
 
         if (unknownItemNames.Any())
@@ -43,7 +42,7 @@ public class BillingService
         foreach (var itemName in distinctItemNames)
         {
             yield return (
-                menuItems.First(i => i.Name.Equals(itemName, StringComparison.InvariantCultureIgnoreCase)),
+                menuItems[itemName],
                 itemNameList.Count(i => i == itemName));
         }
     }
